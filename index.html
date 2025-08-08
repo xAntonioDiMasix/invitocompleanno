@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎂 Festa di Olimpia Di Masi 🎈</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        background: linear-gradient(135deg, #ffe1f0, #ffd6ec);
+        overflow-x: hidden;
+        position: relative;
+        height: 100vh;
+    }
+
+    header {
+        text-align: center;
+        padding: 40px 20px 20px;
+        animation: fadeIn 2s ease-in-out;
+    }
+
+    header h1 {
+        font-size: 3em;
+        color: #ff4f8b;
+        text-shadow: 0 0 5px #fff, 0 0 15px #ff9fba;
+        animation: glitter 2s infinite;
+    }
+
+    header p {
+        font-size: 1.4em;
+        color: #ff6fa5;
+    }
+
+    .content {
+        text-align: center;
+        padding: 20px;
+        animation: fadeInUp 2s ease-in-out;
+        color: #ff4f8b;
+    }
+
+    .cake {
+        margin: 30px auto;
+        width: 150px;
+        height: 150px;
+        position: relative;
+    }
+
+    .cake .base {
+        width: 150px;
+        height: 80px;
+        background: #ffb6c1;
+        border-radius: 10px;
+        position: absolute;
+        bottom: 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .cake .top {
+        width: 150px;
+        height: 20px;
+        background: #ffc0cb;
+        border-radius: 10px 10px 0 0;
+        position: absolute;
+        top: 30px;
+    }
+
+    .candle {
+        width: 10px;
+        height: 30px;
+        background: #fff;
+        position: absolute;
+        top: 0;
+        left: calc(50% - 5px);
+        border-radius: 3px;
+    }
+
+    .flame {
+        width: 10px;
+        height: 10px;
+        background: radial-gradient(circle, yellow, orange, transparent);
+        border-radius: 50%;
+        position: absolute;
+        top: -10px;
+        left: 0;
+        animation: flicker 0.2s infinite;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 15px 25px;
+        background-color: #ff6fa5;
+        color: white;
+        text-decoration: none;
+        border-radius: 25px;
+        font-size: 1.2em;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.3s;
+    }
+
+    .btn:hover {
+        transform: scale(1.1);
+        background-color: #ff4f8b;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    @keyframes fadeInUp {
+        from {opacity: 0; transform: translateY(30px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+
+    @keyframes flicker {
+        0% {transform: scale(1);}
+        50% {transform: scale(1.2);}
+        100% {transform: scale(1);}
+    }
+
+    @keyframes glitter {
+        0%, 100% {text-shadow: 0 0 5px #fff, 0 0 15px #ff9fba;}
+        50% {text-shadow: 0 0 10px #fff, 0 0 20px #ff6fa5;}
+    }
+
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+</style>
+</head>
+<body>
+
+<canvas id="background"></canvas>
+
+<header>
+    <h1>🎉 Olimpia compie 5 anni! 🎉</h1>
+    <p>Non potete mancare 💖</p>
+</header>
+
+<div class="content">
+    <div class="cake">
+        <div class="top"></div>
+        <div class="base"></div>
+        <div class="candle">
+            <div class="flame"></div>
+        </div>
+    </div>
+    <p>📅 <strong>Data:</strong> 16 Agosto</p>
+    <p>⏰ <strong>Ora:</strong> 17:00</p>
+    <p>📍 <strong>Luogo:</strong> Pasticceria Bar Olimpia</p>
+    <a href="https://wa.me/393387517139?text=Ciao%20confermo%20la%20mia%20presenza%20alla%20festa%20di%20Olimpia!" class="btn">Conferma su WhatsApp</a>
+</div>
+
+<script>
+const canvas = document.getElementById('background');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+class Balloon {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + 100;
+        this.size = 20 + Math.random() * 40;
+        this.speed = 0.5 + Math.random() * 1.5;
+        this.color = `hsl(${Math.random() * 360}, 80%, 80%)`;
+    }
+    update() {
+        this.y -= this.speed;
+        if (this.y + this.size < 0) {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + 100;
+            this.color = `hsl(${Math.random() * 360}, 80%, 80%)`;
+        }
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.ellipse(this.x, this.y, this.size * 0.6, this.size, 0, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y + this.size);
+        ctx.lineTo(this.x, this.y + this.size + 20);
+        ctx.strokeStyle = "#888";
+        ctx.stroke();
+    }
+}
+
+class Heart {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * -canvas.height;
+        this.size = 10 + Math.random() * 10;
+        this.speed = 0.5 + Math.random();
+        this.color = "rgba(255,105,180,0.8)";
+    }
+    update() {
+        this.y += this.speed;
+        if (this.y > canvas.height + 20) {
+            this.y = -20;
+            this.x = Math.random() * canvas.width;
+        }
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.bezierCurveTo(this.x - this.size, this.y - this.size, this.x - this.size*2, this.y + this.size/2, this.x, this.y + this.size);
+        ctx.bezierCurveTo(this.x + this.size*2, this.y + this.size/2, this.x + this.size, this.y - this.size, this.x, this.y);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+}
+
+const balloons = [];
+for (let i = 0; i < 25; i++) balloons.push(new Balloon());
+
+const hearts = [];
+for (let i = 0; i < 20; i++) hearts.push(new Heart());
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    balloons.forEach(b => { b.update(); b.draw(); });
+    hearts.forEach(h => { h.update(); h.draw(); });
+    requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
